@@ -9,6 +9,6 @@ urlpatterns = [
     path(
         'characters/',
         CharacterListAPIView.as_view(),
-        name='character-list'
+        name='list'
     )
 ]
