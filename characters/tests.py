@@ -22,13 +22,25 @@ class CharacterAPITests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), expected_size)
 
-    def assert_created_character(self, request, response):
+    def assert_created_character(self, response, expected_data):
+        actual_data = response.data
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        for ability_score in request['body']:
+        ability_types = [
+            'strength', 'dexterity', 'intelligence', 'constitution',
+            'wisdom', 'charisma'
+        ]
+
+        for ability_type in ability_types:
             self.assertEqual(
-                response.data[ability_score],
-                request['body'][ability_score]
+                actual_data[f'{ability_type}_score'],
+                expected_data[f'{ability_type}_score']
+            )
+
+            self.assertEqual(
+                actual_data[f'{ability_type}_modifier'],
+                expected_data[f'{ability_type}_modifier']
             )
 
     def test_create_character(self):
@@ -43,7 +55,22 @@ class CharacterAPITests(APITestCase):
             }
         }
 
+        expected_data = {
+            'strength_score': 18,
+            'strength_modifier': 4,
+            'dexterity_score': 17,
+            'dexterity_modifier': 3,
+            'intelligence_score': 15,
+            'intelligence_modifier': 2,
+            'constitution_score': 10,
+            'constitution_modifier': 0,
+            'wisdom_score': 8,
+            'wisdom_modifier': -1,
+            'charisma_score': 7,
+            'charisma_modifier': -2
+        }
+
         self.assert_character_list_size(0)
         response = self.create_character(request)
-        self.assert_created_character(request, response)
+        self.assert_created_character(response, expected_data)
         self.assert_character_list_size(1)
