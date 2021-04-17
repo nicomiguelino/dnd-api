@@ -37,6 +37,10 @@ class CharacterListAPIView(ListCreateAPIView):
         ]
     )
     def get(self, request, *args, **kwargs):
+        """
+        Get list of all character's information. You could picture this as
+        the list of all character sheets.
+        """
         return super().get(request, *args, **kwargs)
 
     @extend_schema(
@@ -79,4 +83,8 @@ class CharacterListAPIView(ListCreateAPIView):
         ]
     )
     def post(self, request, *args, **kwargs):
+        """
+        Create a character information.
+        """
+
         return super().post(request, *args, **kwargs)
