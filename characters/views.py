@@ -6,7 +6,9 @@ from .serializers import CharacterListSerializer
 
 
 @extend_schema(
-    tags=['Characters']
+    tags=[
+        'Characters'
+    ]
 )
 class CharacterListAPIView(ListCreateAPIView):
     queryset = Character.objects.all()
